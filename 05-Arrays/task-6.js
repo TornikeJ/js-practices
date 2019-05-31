@@ -10,7 +10,7 @@ function reduceRight(array, cb, acc){
         throw new Error('Third parameter required and has to be only string or number');
     }
 
-    var result=0;
+    let result=0;
  
     for(let i=array.length-1;i>=0;i--)
     {
@@ -31,8 +31,7 @@ function reduceRight(array, cb, acc){
 
 const arr = [1,2,3,4];
 
-const reduced = reduceRight(arr, function(acc, item, i, arr){
-    console.log(acc + item);
+reduceRight(arr, function(acc, item, i, arr){
+    return acc + item;
 },'');
 
-// console.log(reduced);
