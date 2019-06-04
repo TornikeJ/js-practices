@@ -11,6 +11,10 @@ Object.defineProperties(person, {
         {
             const today = new Date();
             return !this.rate ? 0 : this.rate * today.getDate();
+        },
+        set: function()
+        {
+            throw new Error("Property `salary` can be read, but can not be changed.");
         }
     },
 });
