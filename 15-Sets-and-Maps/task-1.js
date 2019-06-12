@@ -1,94 +1,96 @@
-class DB{
-    constructor()
-    {
-        this.mp=new Map();
+class DB {
+    constructor() {
+        this.mp = new Map();
     }
 
-    create(obj){
-        if(typeof obj !== 'object')
-        {
+    create(obj) {
+        if (typeof obj !== 'object') {
             throw new Error('Object is invalid')
         }
-        
-        let id='user'+this.mp.size;
-        this.mp.set(id,obj);
-        return id; 
+
+        this.validate(obj);
+
+        let id = 'user' + this.mp.size;
+        this.mp.set(id, obj);
+        return id;
     }
 
-    read(id)
-    {
-        if(arguments.length === 0)
-        {
+    read(id) {
+        if (arguments.length === 0) {
             throw new Error('Required value')
         }
-        if(typeof id !== 'string')
-        {
+        if (typeof id !== 'string') {
             throw new Error('Required String')
         }
-        if(!this.mp.has(id))
-        {
+        if (!this.mp.has(id)) {
             return null;
         }
-
+        
         return this.mp.get(id);
     }
 
-    readAll()
-    {
-        if(arguments.length > 0)
-        {
+    readAll() {
+        if (arguments.length > 0) {
             throw new Error("Can't input parameter");
         }
 
-        return this.mp.entries();
+        let arr=[];
+       
+        this.mp.forEach((value) => {
+           arr.push(value);
+        });
+
+        return arr;
 
     }
-    update(id,obj){
-        if(arguments.length !== 2)
-        {
+    update(id, obj) {
+        if (arguments.length !== 2) {
             throw new Error('Required 2 parameteres');
         }
-        if(typeof id !== 'string')
-        {
+        if (typeof id !== 'string') {
             throw new Error('First parameter required to be a string');
         }
-        if(typeof obj !== 'object')
-        {
+        if (typeof obj !== 'object') {
             throw new Error('Second parameter required to be an object');
         }
-        if(!this.mp.has(id))
-        {
+        if (!this.mp.has(id)) {
             throw new Error('Non-existing id is passed');
         }
 
-        for(let i in this.mp.get(id))
-        {   
-            if(!(obj.hasOwnProperty(i)))
-            { 
+        for (let i in this.mp.get(id)) {
+            if (!(obj.hasOwnProperty(i))) {
                 continue;
             }
 
-            Object.defineProperty(this.mp.get(id),i,
+            Object.defineProperty(this.mp.get(id), i,
                 {
                     value: obj[i]
                 }
             );
 
+            this.validate(this.mp.get(id));
+
         }
     }
-    delete(id)
-    {
-        if(typeof id !== 'string')
-        {
+    delete(id) {
+        if (typeof id !== 'string') {
             throw new Error('Required String')
         }
 
-        if(!this.mp.has(id))
-        {
+        if (!this.mp.has(id)) {
             throw new Error('Non-existing id is passed');
         }
 
         this.mp.delete(id);
+    }
+
+    validate(obj){
+        if (typeof obj.name !== 'string' || typeof obj.country !== 'string') {
+            throw new Error('Property required to be string');
+        }
+        if (typeof obj.age !== 'number' || typeof obj.salary !== 'number') {
+            throw new Error('Property required to be number');
+        }
     }
 }
 
