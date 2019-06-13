@@ -4,8 +4,7 @@ class DB {
     }
 
     create(obj) {
-        this.validate(obj);
- 
+        this.validateCreate(obj);
         let id = Math.random().toString();
         this.mp.set(id, obj);
         return id;
@@ -29,7 +28,6 @@ class DB {
         if (arguments.length > 0) {
             throw new Error("Can't input parameter");
         }
- 
         return [...this.mp.values()];
  
     }
@@ -44,7 +42,8 @@ class DB {
             throw new Error('Non-existing id is passed');
         }
  
-        this.validate(obj);
+        this.validateUpdate(obj);
+
  
         for (let i in this.mp.get(id)) {
             if (!(obj.hasOwnProperty(i))) {
@@ -56,7 +55,6 @@ class DB {
                 value: obj[i]
             }
             );
- 
  
         }
     }
@@ -71,8 +69,32 @@ class DB {
  
         this.mp.delete(id);
     }
+
+    validateCreate(obj)
+    {
+        if (typeof obj !== 'object') {
+            throw new Error('Object is invalid')
+        }
+
+        const properties=['name','age','country','salary'];
+
+        for(let property of properties)
+        {
+            if(!obj.hasOwnProperty(property))
+            {
+                throw new Error(property+' field is required')
+            }
+        }
+
+        if (typeof obj.name !== 'string' || typeof obj.country !== 'string') {
+            throw new Error('Property required to be string');
+        }
+        if (typeof obj.age !== 'number' || typeof obj.salary !== 'number') {
+            throw new Error('Property required to be number');
+        }
+    }
  
-    validate(obj){
+    validateUpdate(obj){
         if (typeof obj !== 'object') {
             throw new Error('Object is invalid')
         }
