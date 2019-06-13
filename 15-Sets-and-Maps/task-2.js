@@ -4,7 +4,7 @@ class DB {
     }
 
     create(obj) {
-        this.validate(obj);
+        this.validateCreate(obj);
         let id = Math.random().toString();
         this.mp.set(id, obj);
         return id;
@@ -84,28 +84,41 @@ class DB {
                 {
                     if(query.hasOwnProperty('age') === item.hasOwnProperty('age') && query.hasOwnProperty('salary') === item.hasOwnProperty('salary'))
                     {
-                        if((query.age.hasOwnProperty('min')||query.age.hasOwnProperty('max'))&&(query.salary.hasOwnProperty('min')||query.salary.hasOwnProperty('max')))
+                        if(((query.age.min<=item.age || query.age.min === undefined) && (query.age.max>=item.age || query.age.max === undefined ))&&((query.salary.min<=item.salary||query.salary.min === undefined) && (query.salary.max>=item.salary||query.salary.max===undefined)))
                         {
                             result.push(item);
                         }
+                        
                     }
                 }
             }
             return result;
         }
  
-    validate(obj){
-        if (typeof obj !== 'object') {
-            throw new Error('Object is invalid')
+        validateCreate(obj)
+        {
+            if (typeof obj !== 'object') {
+                throw new Error('Object is invalid')
+            }
+    
+            const properties=['name','age','country','salary'];
+    
+            for(let property of properties)
+            {
+                if(!obj.hasOwnProperty(property))
+                {
+                    throw new Error(property+' field is required')
+                }
+            }
+    
+            if (typeof obj.name !== 'string' || typeof obj.country !== 'string') {
+                throw new Error('Property required to be string');
+            }
+            if (typeof obj.age !== 'number' || typeof obj.salary !== 'number') {
+                throw new Error('Property required to be number');
+            }
         }
 
-        if (obj.hasOwnProperty('name') && typeof obj.name !== 'string' || obj.hasOwnProperty('country') && typeof obj.country !== 'string') {
-            throw new Error('Property required to be string');
-        }
-        if (obj.hasOwnProperty('age') && typeof obj.age !== 'object' || obj.hasOwnProperty('salary') && typeof obj.salary !== 'object') {
-            throw new Error('Property required to be object');
-        }
-    }
     validateQuery(query){
         if (typeof query !== 'object') {
             throw new Error('Object is invalid')
@@ -162,15 +175,12 @@ class DB {
  const db = new DB();
  
  const person = {
-    country: 'ua',
-    age: {
-        min:21
-    },
-    salary: {
-        min: 300,
-        max: 600
-    }
+    name: 'Pitter', // required field with type string
+    age: 21, // required field with type number
+    country: 'ge', // required field with type string
+    salary: 500 // required field with type number
  };
+ 
  
  const id = db.create(person);
  const customer = db.read(id);
@@ -180,7 +190,8 @@ class DB {
 
 
  const query = {
-    country: 'ua',
+    name:'Pitter',
+    country: 'ge',
     age: {
         min: 21
     },
