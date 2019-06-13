@@ -5,21 +5,19 @@ const getCustomers = (customers,countries) => {
         {
             for(let country of countries)
             {
-                if(customer.id===country.id)
+                if(!customer.id)
                 {
-                    if(customer.verified===true)
-                    {
-                        resolve(Object.assign(customer,country));
-                    }
-                    else{
-                        reject('Objects is not verified');
-                    }
+                    reject('Objects is not verified');
                 }
-                else{
-                    reject("We don't have information about country for this customer");
+                                  
+                if(customer.verified===true && customer.id===country.id)
+                {
+                    resolve(Object.assign(customer,country));
                 }
+
             }
         }
+        reject("We don't have information about country for this customer");
     });
 };
 
