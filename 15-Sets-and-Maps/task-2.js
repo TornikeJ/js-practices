@@ -121,13 +121,13 @@ class DB {
                     throw new Error('Property required to be number')
                 }
             }
-            else if(query.age.hasOwnProperty('max'))
+            if(query.age.hasOwnProperty('max'))
             {
                 if (typeof query.age.max !== 'number') {
                     throw new Error('Property required to be number')
                 }
             }
-            else{
+            if((!query.age.hasOwnProperty('min'))&&(!query.age.hasOwnProperty('max'))){
                 throw new Error('Required min or max property')
             }
         }
@@ -141,13 +141,13 @@ class DB {
                     throw new Error('Property required to be number')
                 }
             }
-            else if(query.salary.hasOwnProperty('max'))
+            if(query.salary.hasOwnProperty('max'))
             {
                 if (typeof query.salary.max !== 'number') {
                     throw new Error('Property required to be number')
                 }
             }
-            else{
+            if((!query.salary.hasOwnProperty('min'))&&(!query.salary.hasOwnProperty('max'))){
                 throw new Error('Required min or max property')
             }
         }
