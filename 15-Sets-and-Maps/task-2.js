@@ -5,7 +5,6 @@ class DB {
 
     create(obj) {
         this.validate(obj);
- 
         let id = Math.random().toString();
         this.mp.set(id, obj);
         return id;
@@ -81,7 +80,6 @@ class DB {
 
             for(let item of original)
             {   
-                console.log(item.name);
                 if(query.name === item.name&&query.country===item.country)
                 {
                     if(query.hasOwnProperty('age') === item.hasOwnProperty('age') && query.hasOwnProperty('salary') === item.hasOwnProperty('salary'))
@@ -123,11 +121,14 @@ class DB {
                     throw new Error('Property required to be number')
                 }
             }
-            if(query.age.hasOwnProperty('max'))
+            else if(query.age.hasOwnProperty('max'))
             {
                 if (typeof query.age.max !== 'number') {
                     throw new Error('Property required to be number')
                 }
+            }
+            else{
+                throw new Error('Required min or max property')
             }
         }
         else{
@@ -140,11 +141,14 @@ class DB {
                     throw new Error('Property required to be number')
                 }
             }
-            if(query.salary.hasOwnProperty('max'))
+            else if(query.salary.hasOwnProperty('max'))
             {
                 if (typeof query.salary.max !== 'number') {
                     throw new Error('Property required to be number')
                 }
+            }
+            else{
+                throw new Error('Required min or max property')
             }
         }
         else{
