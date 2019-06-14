@@ -1,23 +1,36 @@
 const getCustomers = (customers,countries) => {
     return new Promise((resolve,reject) => {
         
+        let result = [];
+        let check=0;
+        
         for(let customer of customers)
         {
+
             for(let country of countries)
             {
-                if(!customer.id)
+                if(!customer.hasOwnProperty('id'))
                 {
-                    reject('Objects is not verified');
+                    console.log(check);
+                    if(check===countries.length-1)
+                    {
+                        reject("We don't have information about country for this customer");
+                    }
+                    check++;
+                    break;
                 }
                                   
                 if(customer.verified===true && customer.id===country.id)
                 {
-                    resolve(Object.assign(customer,country));
+                    result.push(Object.assign(customer,country))
                 }
-
             }
         }
-        reject("We don't have information about country for this customer");
+        if(result.length>0)
+        {
+            resolve(result);
+        }
+        reject('Objects is not verified');
     });
 };
 
@@ -30,7 +43,7 @@ const customers = [
     },
     {
         id: 'A2',
-        name: 'alex'
+        name: 'alex',
     }
 ];
 

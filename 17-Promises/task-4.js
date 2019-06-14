@@ -14,8 +14,8 @@ class Countries {
         }
         return new Promise((resolve, reject) => {
             get(this.url+'?size='+val, (error, meta, body) => {
-                const { data } = JSON.parse(body);
                 if (meta.status == 200) {
+                    const { data } = JSON.parse(body);
                     resolve(data)
                 } else {
                     reject(`We have error, status code: ${meta.status}`)
